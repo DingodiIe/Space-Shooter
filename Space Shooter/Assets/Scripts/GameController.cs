@@ -23,6 +23,12 @@ private int score;
 
 void Start()
 {
+ int width = 600; // or something else
+     int height= 900; // or something else
+     bool isFullScreen = false; // should be windowed to run in arbitrary resolution
+     int desiredFPS = 60; // or something else
+ 
+     Screen.SetResolution (width , height, isFullScreen, desiredFPS );
 gameOver = false;
 restart = false;
 restartText.text = "";
