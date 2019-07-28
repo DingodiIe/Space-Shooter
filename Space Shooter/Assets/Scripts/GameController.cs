@@ -6,7 +6,8 @@ using UnityEngine.SceneManagement;
 
 public class GameController : MonoBehaviour
 {
-public GameObject hazard;
+public GameObject[] hazards;
+
 public Vector3 spawnValues;
 public int hazardCount;
 public float spawnWait;
@@ -18,6 +19,7 @@ public Text GameOverText;
 
 private bool gameOver;
 private bool restart;
+private bool winGame;
 
 private int score;
 
@@ -46,6 +48,7 @@ while (true)
 {
 for (int i = 0; i < hazardCount; i++)
 {
+GameObject hazard = hazards[Random.Range (0,hazards.Length)];
 Vector3 spawnPosition = new Vector3(Random.Range(-spawnValues.x, spawnValues.x), spawnValues.y, spawnValues.z);
 Quaternion spawnRotation = Quaternion.identity;
 Instantiate(hazard, spawnPosition, spawnRotation);
@@ -54,7 +57,7 @@ yield return new WaitForSeconds(spawnWait);
 yield return new WaitForSeconds(waveWait);
     if (gameOver)
     {
-       restartText.text = "Press 'R' for Restart"; 
+       restartText.text = "Press 'P' for Restart"; 
        restart = true;
        break;
     }
@@ -69,7 +72,7 @@ UpdateScore();
 void Update() {
     if (restart)
     {
-        if (Input.GetKeyDown (KeyCode.R)){
+        if (Input.GetKeyDown (KeyCode.P)){
             SceneManager.LoadScene("main"); //
         }
     }
@@ -78,14 +81,22 @@ void Update() {
 }
 void UpdateScore()
 {
-ScoreText.text = "Score: " + score;
+ScoreText.text = "Points: " + score;
+    if(score >= 200)
+    {
+GameOverText.text = "GAME CREATED BY MONTANA BARKER";
+gameOver = true;
+winGame=true;
+restart = true;
+    }
 }
 
 
 public void GameOver()
-{
+{   
+    if (winGame =! false){
     GameOverText.text = "Game Over!";
-    gameOver = true;
+    gameOver = true;}
 }
 
 }

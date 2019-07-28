@@ -4,8 +4,8 @@ using UnityEngine;
 
 public class DestroyByContact : MonoBehaviour
 {
-    public AudioSource MusicSource;
-     public AudioClip MusicClip;
+   // public AudioSource MusicSource;
+   //  public AudioClip MusicClip;
     public GameObject explosion;
     public GameObject playerExplosion;
     private GameController gameController;
@@ -13,7 +13,7 @@ public class DestroyByContact : MonoBehaviour
     
     void Start ()
     {
-        GameObject gameControllerObject = GameObject.FindWithTag ("GameController");
+        GameObject gameControllerObject = GameObject.FindGameObjectWithTag ("GameController");
         if (gameControllerObject != null)
         {
             gameController = gameControllerObject.GetComponent <GameController>();
@@ -22,17 +22,23 @@ public class DestroyByContact : MonoBehaviour
         Debug.Log ("Cannot find 'GameController' script");
     }
     void OnTriggerEnter(Collider other){
-        if(other.tag == "Boundary")
+        if(other.CompareTag  ("Boundary") || other.CompareTag  ("Enemy"))
         {
             return;
         }
-        Instantiate(explosion, transform.position, transform.rotation);
-        if (other.tag == "Player"){
+        if (other.CompareTag  ("Player"))
+        {
         Instantiate(playerExplosion,other.transform.position, other.transform.rotation);
-        gameController.GameOver();}
+       gameController.GameOver();
+        }
+        if (explosion != null)
+        {
+        Instantiate(explosion, transform.position, transform.rotation);
+        }
+        
         gameController.AddScore (scoreValue);
         Destroy(other.gameObject);
         Destroy(gameObject);
-        MusicSource.Play();
+       // MusicSource.Play();
     }
 }
